@@ -135,38 +135,26 @@ class Item {
   }
 }
 
-const targetNode = document.getElementById('app-container')
-const config = { childList: true, subtree: true }
-const callback = (mutationsList, observer) => {
-  for(let mutation of mutationsList) {
-    if (mutation.type === 'childList') {
+EDBoost = {
+  init () {
+    let targetNode = document.getElementById('app-container')
+    let config = { childList: true, subtree: true }
+    let observer = new MutationObserver((mutationsList, observer) => {
       if (MANIPULATING_DOM) { return }
 
       MANIPULATING_DOM = true
-      setTimeout(() => {
+      this.update()
+      setTimeout(() => { MANIPULATING_DOM = false }, 200)
+    })
+    observer.observe(targetNode, config)
+  },
 
-        MANIPULATING_DOM = false
-        var categories = Category.all
-
-        for (var i=0; i < categories.length; i++) {
-          categories[i].injectTotals()
-        }
-      }, 1000)
+  update () {
+    var categories = Category.all
+    for (var i=0; i < categories.length; i++) {
+      categories[i].injectTotals()
     }
-  }
+  },
 }
 
-const observer = new MutationObserver(callback)
-observer.observe(targetNode, config)
-
-// function injectDOMElements () {
-//   if (MANIPULATING_DOM) { return }
-
-//   MANIPULATING_DOM = true
-//   var categories = Category.all
-
-//   for (var i=0; i < categories.length; i++) {
-//     categories[i].injectTotals()
-//   }
-//   setTimeout(() => MANIPULATING_DOM = false, 1000)
-// }
+EDBoost.init()

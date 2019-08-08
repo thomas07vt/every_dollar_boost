@@ -8,8 +8,8 @@
   "content_scripts": [
     {
       "matches": ["*://*.everydollar.com/app/budget"],
-      "js": ["every_dollar_boost.js"]
+      "js": ["every_dollar_boost.js"],
+      "run_at": "document_end"
     }
   ]
-
 }
